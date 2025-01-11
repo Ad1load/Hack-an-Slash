@@ -9,14 +9,21 @@ public class Player_movement : MonoBehaviour
     public float jumpheight = 15f;
     public bool isground = true;
     public Animator av;
+    
+    public int maxhealth = 5;
     void Start()
     {
+        rb = this.GetComponent<Rigidbody2D>();
+        av = this.GetComponent<Animator>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(maxhealth <= 0){
+            die();
+        }
         movement = Input.GetAxis("Horizontal"); //+1,0,-1 front or backward movement
         if (movement < 0f && facingright)
         {
@@ -69,5 +76,15 @@ public class Player_movement : MonoBehaviour
             isground = true;
             av.SetBool("Jump",false);
         }
+    }
+    public void TakeDamage(int damage){
+        if (maxhealth <= 0) {
+            return;
+        }
+        maxhealth -= damage;
+
+    }
+    void die(){
+        Debug.Log("Player has died");
     }
 }
